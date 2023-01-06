@@ -5,11 +5,17 @@ import math
 
 class Character:
     def __init__(self, x, y, image):
+        self.flip = False
         self.image = image
         self.rect = pygame.Rect(0, 0, 16, 24)
         self.rect.center = (x, y)
 
     def move(self, dx, dy):
+
+        if dx < 0:
+            self.flip = True
+        if dx > 0:
+            self.flip = False
 
         # control diagonal speed (pythagoras theorem)
         if dx != 0 and dy != 0:
@@ -20,5 +26,6 @@ class Character:
         self.rect.y += dy
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        flipped_image = pygame.transform.flip(self.image, self.flip, False)
+        surface.blit(flipped_image, self.rect)
         pygame.draw.rect(surface, constants.RED, self.rect, 1)
