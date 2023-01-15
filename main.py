@@ -24,11 +24,23 @@ def scale_img(image, scale):
     return pygame.transform.scale(image, (w * scale, h * scale))
 
 
-player_image = pygame.image.load("assets/player.png").convert_alpha()
-player_image = scale_img(player_image, constants.SCALE)
+animation_types = ["idle", "run"]
+# load images
+animation_list = []
+for animation in animation_types:
+    # reset temporary list of images
+    temp_list = []
+    for i in range(1):
+        img = pygame.image.load(
+            f"assets/images/characters/ness/{animation}/{i}.png"
+        ).convert_alpha()
+        img = scale_img(img, constants.SCALE)
+        temp_list.append(img)
+    animation_list.append(temp_list)
+
 
 # create player:
-player = Character(100, 100, player_image)
+player = Character(100, 100, animation_list)
 
 
 # main game loop
@@ -54,6 +66,9 @@ while run:
 
     # move player
     player.move(dx, dy)
+
+    # update player
+    player.update()
 
     # draw player on screen
     player.draw(screen)
