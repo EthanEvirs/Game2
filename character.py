@@ -4,9 +4,12 @@ import math
 
 
 class Character:
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, animation_list):
         self.flip = False
-        self.image = image
+        self.animation_list = animation_list
+        self.frame_index = 0
+        self.update_time = pygame.time.get_ticks()
+        self.image = animation_list[self.frame_index]
         self.rect = pygame.Rect(0, 0, 16, 24)
         self.rect.center = (x, y)
 
@@ -24,6 +27,19 @@ class Character:
 
         self.rect.x += dx
         self.rect.y += dy
+
+    def update(self):
+        animation_cooldown = 
+        # handle animation
+        # update image
+        self.image = self.animation_list[self.frame_index]
+        # check if enough time has passed since last update
+        if pygame.time.get_ticks() - self.update_time > animation_cooldown:
+            self.frame_index += 1
+            self.update_time = pygame.time.get_ticks()
+        # check if animation has finished
+        if self.frame_index >= len(self.animation_list):
+            self.frame_index = 0
 
     def draw(self, surface):
         flipped_image = pygame.transform.flip(self.image, self.flip, False)
